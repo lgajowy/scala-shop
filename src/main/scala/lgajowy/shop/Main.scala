@@ -8,14 +8,15 @@ import org.http4s.dsl.io._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-
 object Main extends IOApp.Simple {
 
   override def run: IO[Unit] = {
-    val helloWorldService = HttpRoutes.of[IO] {
-      case GET -> Root / "hello" / name =>
-        Ok(s"Hello, $name.")
-    }.orNotFound
+    val helloWorldService = HttpRoutes
+      .of[IO] {
+        case GET -> Root / "hello" / name =>
+          Ok(s"Hello, $name.")
+      }
+      .orNotFound
 
     BlazeServerBuilder[IO](global)
       .bindHttp(8080, "localhost")
