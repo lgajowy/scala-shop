@@ -20,4 +20,5 @@ object order {
   }
 
   case class PaymentError(cause: String) extends OrderOrPaymentError
+  case class OrderError(cause: String) extends OrderOrPaymentError
 }
