@@ -1,15 +1,16 @@
 val Versions =
   new {
-    val http4s      = "0.23.3"
-    val http4sCirce = "0.23.3"
-    val cats        = "3.2.9"
-    val log4cats    = "2.1.1"
-    val catsRetry   = "3.1.0"
-    val newtype     = "0.4.4"
-    val squants     = "1.8.3"
-    val derevo      = "0.12.6"
-    val refined     = "0.9.27"
-    val circe       = "0.14.1"
+    val http4s        = "0.23.3"
+    val http4sCirce   = "0.23.3"
+    val cats          = "3.2.9"
+    val log4cats      = "2.1.1"
+    val catsRetry     = "3.1.0"
+    val newtype       = "0.4.4"
+    val squants       = "1.8.3"
+    val derevo        = "0.12.6"
+    val refined       = "0.9.27"
+    val circe         = "0.14.1"
+    val http4sJwtAuth = "1.0.0"
   }
 
 version := "0.1"
@@ -37,5 +38,6 @@ libraryDependencies ++= Seq(
   "io.circe"         %% s"circe-core"           % Versions.circe,
   "io.circe"         %% s"circe-generic"        % Versions.circe,
   "io.circe"         %% s"circe-parser"         % Versions.circe,
-  "io.circe"         %% s"circe-refined"        % Versions.circe
+  "io.circe"         %% s"circe-refined"        % Versions.circe,
+  "dev.profunktor"   %% "http4s-jwt-auth"       % Versions.http4sJwtAuth
 )

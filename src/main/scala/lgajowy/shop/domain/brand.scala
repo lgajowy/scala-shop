@@ -1,6 +1,6 @@
 package lgajowy.shop.domain
 
-import lgajowy.shop.domain.brand.{Brand, BrandName}
+import lgajowy.shop.domain.brand.{ Brand, BrandName }
 import lgajowy.shop.ext.http4s.queryParam
 import lgajowy.shop.ext.http4s.refined._
 
@@ -13,8 +13,6 @@ import eu.timepit.refined.types.string.NonEmptyString
 import io.circe.refined._
 import io.circe.{ Decoder, Encoder }
 import io.estatico.newtype.macros.newtype
-
-
 
 import java.util.UUID
 

@@ -1,6 +1,7 @@
 package lgajowy.shop.services
 
-import lgajowy.shop.domain.auth.{JwtToken, Password, UserName}
+import dev.profunktor.auth.jwt.JwtToken
+import lgajowy.shop.domain.auth.{ Password, UserName }
 
 trait Auth[F[_]] {
   def newUser(username: UserName, password: Password): F[JwtToken]
