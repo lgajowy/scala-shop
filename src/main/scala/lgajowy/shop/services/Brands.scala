@@ -7,3 +7,11 @@ trait Brands[F[_]] {
 
   def create(name: BrandName): F[BrandId]
 }
+
+object Brands {
+  def make[F[_]](): Brands[F] = new Brands[F] {
+    override def findAll: F[List[Brand]] = ???
+
+    override def create(name: BrandName): F[BrandId] = ???
+  }
+}
