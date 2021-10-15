@@ -1,8 +1,7 @@
 package lgajowy.shop.domain
 
-
 import derevo.cats._
-import derevo.circe.magnolia.{ decoder, encoder }
+import derevo.circe.magnolia.{decoder, encoder}
 import derevo.derive
 import eu.timepit.refined.auto._
 import eu.timepit.refined.types.string.NonEmptyString
@@ -39,11 +38,21 @@ object auth {
   case class EncryptedPassword(value: String)
 
   @derive(decoder, encoder)
+  case class CreateUser(
+    username: UserNameParam,
+    password: PasswordParam
+  )
+
+  @derive(decoder, encoder)
   case class LoginUser(
     username: UserNameParam,
     password: PasswordParam
   )
 
   case class UserNotFound(username: UserName)    extends NoStackTrace
+  case class UserNameInUse(username: UserName)   extends NoStackTrace
   case class InvalidPassword(username: UserName) extends NoStackTrace
+  case object UnsupportedOperation               extends NoStackTrace
+
+  case object TokenNotFound extends NoStackTrace
 }

@@ -1,9 +1,7 @@
 package lgajowy.shop.http.routes.secured
 
-import lgajowy.shop.domain.order
 import lgajowy.shop.ext.http4s.refined.RefinedRequestDecoder
 import lgajowy.shop.http.auth.users.CommonUser
-import lgajowy.shop.http.vars.OrderIdVar
 import lgajowy.shop.programs.CheckoutProgram
 import cats.MonadThrow
 import cats.syntax.all._
