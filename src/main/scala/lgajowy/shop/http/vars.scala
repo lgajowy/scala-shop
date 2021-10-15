@@ -2,6 +2,7 @@ package lgajowy.shop.http
 
 import cats.implicits._
 import lgajowy.shop.domain.item.ItemId
+import lgajowy.shop.domain.order.OrderId
 
 import java.util.UUID
 
@@ -12,4 +13,5 @@ object vars {
   }
 
   object ItemIdVar extends UUIDVar(ItemId.apply)
+  object OrderIdVar extends UUIDVar(OrderId.apply)
 }
