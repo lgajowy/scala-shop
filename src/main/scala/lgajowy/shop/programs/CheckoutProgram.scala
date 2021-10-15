@@ -19,13 +19,13 @@ import squants.Money
 
 import scala.concurrent.duration._
 
-final case class Checkout[F[_]: MonadThrow: Temporal: Background: Logger](
+final case class CheckoutProgram[F[_]: MonadThrow: Temporal: Background: Logger](
   paymentClient: PaymentClient[F],
   shoppingCart: ShoppingCart[F],
   orders: Orders[F]
 ) {
 
-  def checkout(userId: UserId, card: Card): F[OrderId] = {
+  def process(userId: UserId, card: Card): F[OrderId] = {
     shoppingCart.get(userId).flatMap {
       case CartTotal(items, total) =>
         for {

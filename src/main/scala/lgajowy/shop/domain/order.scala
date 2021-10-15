@@ -26,6 +26,10 @@ object order {
     def cause: String
   }
 
+  @derive(show)
+  case object EmptyCartError extends NoStackTrace
+
+  @derive(eqv, show)
+  case class OrderError(cause: String)   extends OrderOrPaymentError
   case class PaymentError(cause: String) extends OrderOrPaymentError
-  case class OrderError(cause: String) extends OrderOrPaymentError
 }

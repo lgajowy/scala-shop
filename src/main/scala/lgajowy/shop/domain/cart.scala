@@ -4,8 +4,11 @@ import derevo.cats.{eqv, show}
 import derevo.circe.magnolia.{decoder, encoder}
 import derevo.derive
 import io.estatico.newtype.macros.newtype
+import lgajowy.shop.domain.auth.UserId
 import lgajowy.shop.domain.item.{Item, ItemId}
 import squants.market.Money
+
+import scala.util.control.NoStackTrace
 
 object cart {
 
@@ -20,4 +23,7 @@ object cart {
 
   @derive(decoder, encoder, eqv, show)
   case class CartTotal(items: List[CartItem], total: Money)
+
+  @derive(decoder, encoder)
+  case class CartNotFound(userId: UserId) extends NoStackTrace
 }
