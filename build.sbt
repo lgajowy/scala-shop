@@ -11,6 +11,7 @@ val Versions =
     val refined       = "0.9.27"
     val circe         = "0.14.1"
     val http4sJwtAuth = "1.0.0"
+    val skunk         = "0.2.2"
   }
 
 version := "0.1"
@@ -39,5 +40,7 @@ libraryDependencies ++= Seq(
   "io.circe"         %% s"circe-generic"        % Versions.circe,
   "io.circe"         %% s"circe-parser"         % Versions.circe,
   "io.circe"         %% s"circe-refined"        % Versions.circe,
-  "dev.profunktor"   %% "http4s-jwt-auth"       % Versions.http4sJwtAuth
+  "dev.profunktor"   %% "http4s-jwt-auth"       % Versions.http4sJwtAuth,
+  "org.tpolecat"     %% "skunk-core"            % Versions.skunk,
+  "org.tpolecat"     %% "skunk-circe"           % Versions.skunk
 )

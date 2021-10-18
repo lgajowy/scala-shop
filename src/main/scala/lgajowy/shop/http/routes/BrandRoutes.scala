@@ -1,7 +1,8 @@
 package lgajowy.shop.http.routes
 
-import lgajowy.shop.domain.Brands
+
 import cats.Monad
+import lgajowy.shop.services.Brands
 import org.http4s._
 import org.http4s.circe.CirceEntityEncoder._
 import org.http4s.dsl.Http4sDsl

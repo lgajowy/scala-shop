@@ -16,12 +16,8 @@ import io.estatico.newtype.macros.newtype
 
 import java.util.UUID
 
-trait Brands[F[_]] {
-  def findAll: F[List[Brand]]
-  def create(name: BrandName): F[Unit]
-}
-
 object brand {
+
   @derive(decoder, encoder, eqv, show)
   @newtype case class BrandId(value: UUID)
 
@@ -29,7 +25,7 @@ object brand {
   @newtype case class BrandName(value: String)
 
   @derive(decoder, encoder, eqv, show)
-  case class Brand(id: BrandId, name: BrandName)
+  case class Brand(uuid: BrandId, name: BrandName)
 
   @derive(queryParam, show)
   @newtype
