@@ -1,10 +1,12 @@
 package lgajowy.shop.services
 
-import lgajowy.shop.domain.brand.{Brand, BrandId, BrandName}
-
+import cats.effect.{ MonadCancelThrow, Resource }
+import lgajowy.shop.domain.brand.{ Brand, BrandId, BrandName }
+import lgajowy.shop.effects.GenUUID
 import skunk._
 import skunk.implicits._
 import lgajowy.shop.sql.codecs._
+import cats.syntax.all._
 
 trait Brands[F[_]] {
   def findAll: F[List[Brand]]
@@ -13,11 +15,25 @@ trait Brands[F[_]] {
 }
 
 object Brands {
-  def make[F[_]](): Brands[F] = new Brands[F] {
-    override def findAll: F[List[Brand]] = ???
+  def make[F[_]: GenUUID: MonadCancelThrow](
+    postgres: Resource[F, Session[F]]
+  ): Brands[F] =
+    new Brands[F] {
+      import BrandSQL._
 
-    override def create(name: BrandName): F[BrandId] = ???
-  }
+      def findAll: F[List[Brand]] =
+        postgres.use(_.execute(selectAll))
+
+      def create(name: BrandName): F[BrandId] =
+        postgres.use { session =>
+          session.prepare(insertBrand).use { cmd =>
+            GenUUID[F].make.flatMap { id =>
+              val brandId = BrandId(id)
+              cmd.execute(Brand(brandId, name)).as(brandId)
+            }
+          }
+        }
+    }
 }
 
 private object BrandSQL {

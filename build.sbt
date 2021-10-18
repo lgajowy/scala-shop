@@ -42,5 +42,5 @@ libraryDependencies ++= Seq(
   "io.circe"         %% s"circe-refined"        % Versions.circe,
   "dev.profunktor"   %% "http4s-jwt-auth"       % Versions.http4sJwtAuth,
   "org.tpolecat"     %% "skunk-core"            % Versions.skunk,
-  "org.tpolecat"     %% "skunk-circe"           % Versions.skunk
+  "org.tpolecat"     %% "skunk-circe"           % Versions.skunk,
 )

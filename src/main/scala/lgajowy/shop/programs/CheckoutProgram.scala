@@ -1,16 +1,17 @@
 package lgajowy.shop.programs
 
 import cats.MonadThrow
+import cats.data.NonEmptyList
 import cats.effect.kernel.Temporal
 import cats.implicits._
 import lgajowy.shop.clients.PaymentClient
 import lgajowy.shop.domain.auth.UserId
-import lgajowy.shop.domain.cart.{ CartItem, CartTotal }
+import lgajowy.shop.domain.cart.{CartItem, CartTotal}
 import lgajowy.shop.domain.checkout.Card
-import lgajowy.shop.domain.order.{ OrderError, OrderId, PaymentError, PaymentId }
+import lgajowy.shop.domain.order.{EmptyCartError, OrderError, OrderId, PaymentError, PaymentId}
 import lgajowy.shop.domain.payment.Payment
 import lgajowy.shop.effects.Background
-import lgajowy.shop.services.{ Orders, ShoppingCart }
+import lgajowy.shop.services.{Orders, ShoppingCart}
 import org.typelevel.log4cats.Logger
 import retry.RetryDetails._
 import retry.RetryPolicies._
@@ -25,12 +26,16 @@ final case class CheckoutProgram[F[_]: MonadThrow: Temporal: Background: Logger]
   orders: Orders[F]
 ) {
 
+  private def ensureNonEmpty[A](xs: List[A]): F[NonEmptyList[A]] =
+    MonadThrow[F].fromOption(NonEmptyList.fromList(xs), EmptyCartError)
+
   def process(userId: UserId, card: Card): F[OrderId] = {
     shoppingCart.get(userId).flatMap {
       case CartTotal(items, total) =>
         for {
+          itemsList <- ensureNonEmpty(items)
           paymentId <- processPayment(Payment(userId, total, card))
-          orderId   <- createOrder(userId, paymentId, items, total)
+          orderId   <- createOrder(userId, paymentId, itemsList, total)
           _         <- shoppingCart.delete(userId)
         } yield orderId
     }
@@ -41,7 +46,7 @@ final case class CheckoutProgram[F[_]: MonadThrow: Temporal: Background: Logger]
     action.adaptError { case e => PaymentError(Option(e.getMessage).getOrElse("Unknown")) }
   }
 
-  private def createOrder(userId: UserId, paymentId: PaymentId, items: List[CartItem], total: Money): F[OrderId] = {
+  private def createOrder(userId: UserId, paymentId: PaymentId, items: NonEmptyList[CartItem], total: Money): F[OrderId] = {
     val action =
       retryingOnAllErrors[OrderId](retryPolicy, logError("Orders"))(orders.create(userId, paymentId, items, total))
 
